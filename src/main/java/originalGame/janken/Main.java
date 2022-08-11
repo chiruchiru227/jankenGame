@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +16,8 @@ import javax.swing.JPanel;
 public class Main {
 	//じゃんけんの手の配列を作る
 	private static String[] hands = {"グー", "チョキ", "パー"};
+	
+	static JLabel contentsLabel;
 
 	public static void main(String[] args) {
 		//JFrameクラスをインスタンス化
@@ -43,7 +47,7 @@ public class Main {
 		//コンテンツパネルに、レイアウトマネージャとしてBorderLayoutを指定
 		contentsPanel.setLayout(new BorderLayout());
 		//テキストを作成
-		JLabel contentsLabel = TextMaker.makeText("じゃんけん……", 54, Color.BLACK);
+		contentsLabel = TextMaker.makeText("じゃんけん……", 54, Color.BLACK);
 		//コンテンツパネルにテキストを追加
 		contentsPanel.add(contentsLabel);
 		//ウィンドウにコンテンツパネルを追加
@@ -60,6 +64,8 @@ public class Main {
 			JButton button = new JButton(hand);
 			//ボタンのフォントを設定
 			button.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, 24));
+			//ボタンが押されたら、ButtonActionListenerクラスのactionPerformedメソッドを実行
+			button.addActionListener(new ButtonActionListener());
 			//グーボタンをフッターパネルに追加
 			footerPanel.add(button);
 		}
@@ -71,6 +77,21 @@ public class Main {
 		frame.setVisible(true);
 	}
 	
+	//ボタンが押されたときのためのクラス
+	static class ButtonActionListener implements ActionListener {
+		//ボタンが押されたときに呼ばれるメソッド
+		public void actionPerformed(ActionEvent e) {
+			//押されたボタンを、コンソールに表示
+			System.out.println(e.getActionCommand());
+			//コンピュータの手（数値）をランダムに取得
+			int computerHandNum = ComputerHand.getComputerHand();
+			//数値からコンピュータの手を取り出して代入
+			String computerHand = hands[computerHandNum];
+			//コンテンツパネルのテキストに、コンピュータの手を指定
+			contentsLabel.setText(computerHand);
+		}
+
+	}
 
 
 }
